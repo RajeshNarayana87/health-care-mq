@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  activemq:
+    image: rmohr/activemq:latest
+    container_name: activemq
+    ports:
+      - "61616:61616"
+      - "8161:8161"
+      - "1099:1099"
+    environment:
+      ACTIVEMQ_ADMIN_LOGIN: admin
+      ACTIVEMQ_ADMIN_PASSWORD: admin
+      ACTIVEMQ_OPTS: "-Dcom.sun.management.jmxremote=true -Dcom.sun.management.jmxremote.port=1099 -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false"
+
+  app:
+    build: .
+    container_name: jms-springboot-app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - activemq
+    environment:
+      SPRING_ACTIVEMQ_BROKER-URL: tcp://activemq:61616
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus

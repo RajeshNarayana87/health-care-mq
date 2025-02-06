@@ -1,0 +1,31 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <broker xmlns="http://activemq.apache.org/schema/core" brokerName="localhost" persistent="true">
+
+        <destinationPolicy>
+            <policyMap>
+                <policyEntries>
+                    <policyEntry queue=">" expireMessagesPeriod="0">
+                        <deadLetterStrategy>
+                            <individualDeadLetterStrategy queuePrefix="DLQ." useQueueForQueueMessages="true"/>
+                        </deadLetterStrategy>
+                    </policyEntry>
+                </policyEntries>
+            </policyMap>
+        </destinationPolicy>
+
+        <plugins>
+            <redeliveryPlugin fallbackToDeadLetter="true">
+                <redeliveryPolicyMap>
+                    <redeliveryPolicyEntries>
+                        <redeliveryPolicy queue="test-queue" maximumRedeliveries="3" redeliveryDelay="5000"/>
+                    </redeliveryPolicyEntries>
+                </redeliveryPolicyMap>
+            </redeliveryPlugin>
+        </plugins>
+
+    </broker>
+</beans>

@@ -1,0 +1,58 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.2'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'com.healnet'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	all*.exclude module : 'spring-boot-starter-logging'
+	all*.exclude module : 'logback-classic'
+	all*.exclude module : 'commons-logging'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.apache.activemq:activemq-broker:6.1.5'
+	implementation 'org.springframework:spring-jms:7.0.0-M1'
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2:3.3.2'
+	implementation 'io.micrometer:micrometer-registry-prometheus'
+
+	compileOnly 'org.projectlombok:lombok'
+
+	developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
+
+	annotationProcessor 'org.projectlombok:lombok'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.junit.platform:junit-platform-launcher'
+	testImplementation 'org.mockito:mockito-core'
+	testImplementation 'org.awaitility:awaitility'
+}
+
+configurations.configureEach {
+	exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+	afterTest { desc, result ->
+		logger.quiet "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+	}
+}
