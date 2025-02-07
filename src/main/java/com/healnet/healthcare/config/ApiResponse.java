@@ -6,7 +6,7 @@ import com.healnet.healthcare.dto.ApiResult;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record ApiResponse<T>(
-        ApiResult resultInfo,
+        ApiResult apiResult,
         @JsonProperty("data")
         T data
 ) {

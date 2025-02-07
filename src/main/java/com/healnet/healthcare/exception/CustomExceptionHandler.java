@@ -48,5 +48,13 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         log.error(ex.getStackTrace());
         return new ApiResponse<>(INTERNAL_SERVER_ERROR, ex.getMessage());
     }
+
+    @ExceptionHandler(value = {UnprocessableEntityException.class})
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    public ApiResponse<Object> unprocessableEntityExceptionHandler(UnprocessableEntityException ex) {
+        log.error("Error Message: {}", ex.getMessage(), ex);
+        log.error(ex.getStackTrace());
+        return new ApiResponse<>(FAILURE, ex.getMessage());
+    }
 }
 

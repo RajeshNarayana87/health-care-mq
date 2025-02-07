@@ -8,11 +8,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "treatment")
 public class Treatment extends BaseEntity implements Serializable {
@@ -24,6 +26,6 @@ public class Treatment extends BaseEntity implements Serializable {
     @Column(name = "name")
     private String treatmentName;
 
-    @Column(name = "is_deleted", columnDefinition="tinyint(1) default 1")
+    @Column(name = "is_deleted", columnDefinition="tinyint(1) default 0")
     private boolean isDeleted;
 }

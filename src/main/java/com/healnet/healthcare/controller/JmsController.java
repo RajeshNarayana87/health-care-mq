@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import static com.healnet.healthcare.constants.ApiResultConstants.SUCCESS;
 
 @RestController
-@RequestMapping("/api/jms")
+@RequestMapping("/v1/jms")
 @RequiredArgsConstructor
 public class JmsController {
 
