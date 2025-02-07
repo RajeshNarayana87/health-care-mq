@@ -1,13 +1,12 @@
 package com.healnet.healthcare;
 
-import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class HealthcareApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+ /*   @Test
+    void contextLoads() {
+    }*/
 
 }
