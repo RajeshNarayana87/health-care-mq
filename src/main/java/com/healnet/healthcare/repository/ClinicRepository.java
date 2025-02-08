@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface ClinicRepository extends JpaRepository<Clinic, Long> {
     @Query("SELECT c FROM Clinic c WHERE c.isDeleted = false")
     Optional<List<Clinic>> findByIsNotDeleted();
+
+    Optional<Clinic> findByIdAndIsDeleted(Long clinicId, boolean isDeleted);
 }

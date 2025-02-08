@@ -35,7 +35,7 @@ public class TreatmentServiceImpl implements TreatmentService {
     @Override
     public TreatmentInfo getTreatmentInfo(Long treatmentId) {
         log.info("Fetching info from DB for treatmentId: {}", treatmentId);
-        var optionalTreatment = treatmentRepository.findById(treatmentId);
+        var optionalTreatment = treatmentRepository.findByIdAndIsDeleted(treatmentId, false);
         log.info("Fetched info from DB for treatmentId: {}", treatmentId);
         return optionalTreatment.map(treatment -> new TreatmentInfo(treatment.getId(), treatment.getClinic().getId(), treatment.getTreatmentName())).orElse(null);
     }

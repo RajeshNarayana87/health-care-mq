@@ -35,7 +35,7 @@ public class ClinicServiceImpl implements ClinicService {
     @Override
     public ClinicInfo getClinicInfo(Long clinicId) {
         log.info("Fetching info from DB for clinicId: {}", clinicId);
-        var optionalClinic = clinicRepository.findById(clinicId);
+        var optionalClinic = clinicRepository.findByIdAndIsDeleted(clinicId, false);
         log.info("Fetched info from DB for clinicId: {}", clinicId);
         return optionalClinic.map(clinic -> new ClinicInfo(clinic.getId(), clinic.getHospital().getId(), clinic.getClinicName())).orElse(null);
     }

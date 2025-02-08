@@ -1,6 +1,6 @@
 package com.healnet.healthcare.exception;
 
-import com.healnet.healthcare.config.ApiResponse;
+import com.healnet.healthcare.dto.ApiResponse;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;

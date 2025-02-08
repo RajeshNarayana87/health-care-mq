@@ -1,15 +1,18 @@
 package com.healnet.healthcare.config;
 
-import jakarta.jms.Queue;
-import org.apache.activemq.command.ActiveMQQueue;
+import jakarta.jms.ConnectionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jms.core.JmsTemplate;
 
 @Configuration
 public class JmsConfig {
 
     @Bean
-    public Queue queue() {
-        return new ActiveMQQueue("test-queue");
+    public JmsTemplate jmsTemplate(ConnectionFactory connectionFactory) {
+        JmsTemplate jmsTemplate = new JmsTemplate(connectionFactory);
+        jmsTemplate.setPubSubDomain(false);
+        jmsTemplate.setMessageConverter(new org.springframework.jms.support.converter.MappingJackson2MessageConverter());
+        return jmsTemplate;
     }
 }

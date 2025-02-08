@@ -13,4 +13,6 @@ import java.util.Optional;
 public interface TreatmentRepository extends JpaRepository<Treatment, Long> {
     @Query("SELECT t FROM Treatment t WHERE t.isDeleted = false")
     Optional<List<Treatment>> findByIsNotDeleted();
+
+    Optional<Treatment> findByIdAndIsDeleted(Long treatmentId, boolean isDeleted);
 }

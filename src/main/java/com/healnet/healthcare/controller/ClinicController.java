@@ -1,10 +1,8 @@
 package com.healnet.healthcare.controller;
 
-import com.healnet.healthcare.config.ApiResponse;
+import com.healnet.healthcare.dto.ApiResponse;
 import com.healnet.healthcare.dto.ClinicInfo;
-import com.healnet.healthcare.dto.HospitalInfo;
 import com.healnet.healthcare.service.ClinicService;
-import com.healnet.healthcare.service.HospitalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;

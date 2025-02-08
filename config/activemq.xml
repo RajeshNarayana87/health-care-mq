@@ -17,15 +17,5 @@
             </policyMap>
         </destinationPolicy>
 
-        <plugins>
-            <redeliveryPlugin fallbackToDeadLetter="true">
-                <redeliveryPolicyMap>
-                    <redeliveryPolicyEntries>
-                        <redeliveryPolicy queue="test-queue" maximumRedeliveries="3" redeliveryDelay="5000"/>
-                    </redeliveryPolicyEntries>
-                </redeliveryPolicyMap>
-            </redeliveryPlugin>
-        </plugins>
-
     </broker>
 </beans>

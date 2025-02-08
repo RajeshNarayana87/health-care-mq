@@ -1,7 +1,6 @@
 package com.healnet.healthcare.controller;
 
-import com.healnet.healthcare.config.ApiResponse;
-import com.healnet.healthcare.dto.ClinicInfo;
+import com.healnet.healthcare.dto.ApiResponse;
 import com.healnet.healthcare.dto.TreatmentInfo;
 import com.healnet.healthcare.service.TreatmentService;
 import lombok.RequiredArgsConstructor;

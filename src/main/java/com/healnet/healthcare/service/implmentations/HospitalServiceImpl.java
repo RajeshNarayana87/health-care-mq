@@ -34,7 +34,7 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public HospitalInfo getHospitalInfo(Long hospitalId) {
         log.info("Fetching info from DB for hospitalId: {}", hospitalId);
-        var optionalHospital = hospitalRepository.findById(hospitalId);
+        var optionalHospital = hospitalRepository.findByIdAndIsDeleted(hospitalId, false);
         log.info("Fetched info from DB for hospitalId: {}", hospitalId);
         return optionalHospital.map(hospital -> new HospitalInfo(hospital.getId(), hospital.getHospitalName())).orElse(null);
     }
