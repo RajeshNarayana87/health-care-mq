@@ -1,17 +1,21 @@
 package com.healnet.healthcare.service.implmentations;
 
 import com.healnet.healthcare.dto.ClinicInfo;
+import com.healnet.healthcare.dto.Event;
 import com.healnet.healthcare.entity.Clinic;
+import com.healnet.healthcare.entity.Hospital;
+import com.healnet.healthcare.entity.Treatment;
 import com.healnet.healthcare.exception.UnprocessableEntityException;
 import com.healnet.healthcare.repository.ClinicRepository;
 import com.healnet.healthcare.repository.HospitalRepository;
+import com.healnet.healthcare.repository.TreatmentRepository;
 import com.healnet.healthcare.service.ClinicService;
+import jakarta.jms.JMSException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -21,6 +25,7 @@ public class ClinicServiceImpl implements ClinicService {
 
     private final ClinicRepository clinicRepository;
     private final HospitalRepository hospitalRepository;
+    private final TreatmentRepository treatmentRepository;
 
     @Override
     public List<ClinicInfo> getAllClinicInfo() {
@@ -48,7 +53,49 @@ public class ClinicServiceImpl implements ClinicService {
             throw new UnprocessableEntityException("Hospital Info Not present for given Hospital Id");
         }
         log.info("Saving Clinic info to DB for Clinic: {}", clinicInfo.getName());
-        clinicRepository.save(new Clinic(optionalHospital.get(), clinicInfo.getName(), false));
+        clinicRepository.save(new Clinic(clinicInfo.getId(), optionalHospital.get(), clinicInfo.getName(), false));
         log.info("Saved clinic info to DB for clinic: {} successfully", clinicInfo.getName());
+    }
+
+    @Override
+    public void createGroup(Event event) throws JMSException {
+        var optionalClinicInfo = clinicRepository.findById(event.getGroupId());
+        if (optionalClinicInfo.isPresent()) {
+            var hospitalInfo = checkForHospital(event);
+            clinicRepository.save(new Clinic(event.getGroupId(), hospitalInfo, event.getName(), false));
+        } else {
+            var hospitalInfo = checkForHospital(event);
+            clinicRepository.save(new Clinic(event.getGroupId(), hospitalInfo, event.getName(), false));
+        }
+    }
+    @Override
+    public void deleteGroup(Event event) throws JMSException {
+        var optionalClinicInfo = clinicRepository.findById(event.getGroupId());
+        if (optionalClinicInfo.isPresent()) {
+            clinicRepository.save(new Clinic(event.getGroupId(), optionalClinicInfo.get().getHospital(), event.getName(), true));
+            deleteAllTreatmentInfo(event);
+        } else {
+           throw new JMSException("Unable to process the Event! invalid group Id Provided");
+        }
+    }
+
+    private void deleteAllTreatmentInfo(Event event) {
+        var treatmentInfo = treatmentRepository.findByClinicId(event.getGroupId());
+        treatmentInfo.ifPresent(treatments -> treatments.forEach(this::saveUpdateTreatmentInfo));
+
+    }
+
+    private void saveUpdateTreatmentInfo(Treatment treatment) {
+        treatment.setDeleted(true);
+        treatmentRepository.save(treatment);
+    }
+
+    private Hospital checkForHospital(Event event) throws JMSException {
+        var hospitalInfo = hospitalRepository.findById(event.getParentGroupId());
+        if (hospitalInfo.isEmpty()) {
+            log.error("Exception while processing the event: {}", event.toString());
+            throw new JMSException("Unable to process the Event! invalid Parent group Id Provided");
+        }
+        return hospitalInfo.get();
     }
 }

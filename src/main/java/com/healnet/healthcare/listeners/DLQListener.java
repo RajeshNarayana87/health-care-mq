@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DLQListener {
 
-    @JmsListener(destination = "ActiveMQ.DLQ", containerFactory = "jmsFactory")
+    @JmsListener(destination = "${queue.name.dl-queue}", containerFactory = "jmsFactory")
     public void receiveMessage(Message message) {
         try {
             String json = ((TextMessage) message).getText();

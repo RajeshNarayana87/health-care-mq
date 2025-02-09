@@ -23,6 +23,7 @@ public class Event implements Serializable {
 
     private Long groupId;
     private Long parentGroupId;
+    private String name;
     private EventOperation operation;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Long timeStamp;
@@ -33,10 +34,12 @@ public class Event implements Serializable {
     public Event(
             @JsonProperty("groupId") Long groupId,
             @JsonProperty("parentGroupId") Long parentGroupId,
+            @JsonProperty("name") String name,
             @JsonProperty("operation") EventOperation operation,
             @JsonProperty("timeStamp") long timeStamp) {
         this.groupId = groupId;
         this.parentGroupId = parentGroupId;
+        this.name = name;
         this.operation = operation;
         this.timeStamp = timeStamp;
     }

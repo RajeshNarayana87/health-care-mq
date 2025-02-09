@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DeleteEventListener {
 
-    @JmsListener(destination = "queue.delete", containerFactory = "jmsFactory")
+    @JmsListener(destination = "${queue.name.delete}", containerFactory = "jmsFactory")
     public void receiveMessage(Message message) {
         try {
             String json = ((TextMessage) message).getText();

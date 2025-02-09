@@ -14,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "hospital")
-public class Hospital extends BaseEntity implements Serializable {
+public class Hospital extends BaseEntityWithId implements Serializable {
     @Column(name = "name")
     private String hospitalName;
 

@@ -8,5 +8,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class EventRequest {
     private Long groupId;
+    private Long parentGroupId;
+    private String groupName;
     private EventOperation operation;
 }

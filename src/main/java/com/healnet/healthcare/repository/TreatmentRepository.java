@@ -15,4 +15,6 @@ public interface TreatmentRepository extends JpaRepository<Treatment, Long> {
     Optional<List<Treatment>> findByIsNotDeleted();
 
     Optional<Treatment> findByIdAndIsDeleted(Long treatmentId, boolean isDeleted);
+
+    Optional<List<Treatment>> findByClinicId(Long groupId);
 }
