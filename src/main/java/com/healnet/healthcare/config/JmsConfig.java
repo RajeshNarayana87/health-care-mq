@@ -40,7 +40,7 @@ public class JmsConfig {
     public DefaultJmsListenerContainerFactory jmsFactory(ConnectionFactory connectionFactory) {
         DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
-        //factory.setErrorHandler(new JmsErrorHandler());
+        factory.setErrorHandler(new JmsErrorHandler());
         factory.setMessageConverter(jacksonJmsMessageConverter());
         return factory;
     }
