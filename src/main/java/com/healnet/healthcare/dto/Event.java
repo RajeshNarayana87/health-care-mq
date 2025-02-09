@@ -1,16 +1,21 @@
 package com.healnet.healthcare.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.healnet.healthcare.constants.EventOperation;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
-@Data
 @AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class Event implements Serializable {
 
     @Serial
@@ -22,13 +27,17 @@ public class Event implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Long timeStamp;
 
-    @Override
-    public String toString() {
-        return "Event{" +
-                "groupId=" + groupId +
-                ", parentGroupId=" + parentGroupId +
-                ", operation=" + operation +
-                ", timeStamp=" + timeStamp +
-                '}';
+    public Event() { /* needed for Json serialization */ }
+
+    @JsonCreator
+    public Event(
+            @JsonProperty("groupId") Long groupId,
+            @JsonProperty("parentGroupId") Long parentGroupId,
+            @JsonProperty("operation") EventOperation operation,
+            @JsonProperty("timeStamp") long timeStamp) {
+        this.groupId = groupId;
+        this.parentGroupId = parentGroupId;
+        this.operation = operation;
+        this.timeStamp = timeStamp;
     }
 }
